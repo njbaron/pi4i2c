@@ -63,10 +63,7 @@ public class mpu6050 {
      * @param address The I2C address of the MPU6050.
      */
     public mpu6050(byte address) throws Exception{
-        this.i2cBus = I2CFactory.getInstance(1);
-        this.device = i2cBus.getDevice(address);
-        // Wake up the MPU6050 from sleep since it starts in sleep mode by default.
-        device.write(PWR_MGMT_1, (byte) 0x00);
+        this.init(address, 1);
     }
 
     /**
@@ -75,8 +72,14 @@ public class mpu6050 {
      * @param busNo Bus number that will be used. 0 for RasPi1 1 for all other RasPi
      */
     public mpu6050(byte address, int busNo) throws Exception{
+        this.init(address, busNo);
+    }
+
+    private void init(byte address, int busNo) throws Exception{
         this.i2cBus = I2CFactory.getInstance(busNo);
         this.device = i2cBus.getDevice(address);
+        // Wake up the MPU6050 from sleep since it starts in sleep mode by default.
+        device.write(PWR_MGMT_1, (byte) 0x00);
     }
 
     //General i2c Communication Methods
