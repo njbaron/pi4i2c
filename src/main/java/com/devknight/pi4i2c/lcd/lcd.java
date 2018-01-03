@@ -67,7 +67,63 @@ public class lcd{
     private void init(byte address, int busNo) throws Exception{
         this.i2cBus = I2CFactory.getInstance(busNo);
         this.device = i2cBus.getDevice(address);
+    }
 
+    //LCD Commands
 
+    public void strobe(byte data) throws Exception{
+        device.write((byte)(data | En | LCD_BACKLIGHT));
+        Thread.sleep(1);
+        device.write((byte)((data & ~En) | LCD_BACKLIGHT));
+        Thread.sleep(1);
+    }
+
+    public void write4bits(byte data) throws Exception{
+        device.write((byte)(data | LCD_BACKLIGHT));
+        Thread.sleep(1);
+        strobe(data);
+    }
+
+    public void write(byte cmd, int mode) throws Exception{
+        writeHelper(cmd, mode);
+    }
+
+    public void write(byte cmd) throws Exception{
+        writeHelper(cmd, 0);
+    }
+
+    private void writeHelper(byte cmd, int mode) throws Exception{
+        write4bits((byte)(mode | (cmd & 0xF0)));
+        write4bits((byte)(mode | (cmd << 4) & 0xF0));
+    }
+
+    public void writeString(String s, int line) throws Exception {
+        switch (line) {
+            case 1:
+                write((byte)0x08);
+                break;
+            case 2:
+                write((byte)0xC0);
+                break;
+            case 3:
+                write((byte)0x94);
+                break;
+            case 4:
+                write((byte) 0xD4);
+                break;
+            default:
+                System.out.println("invalid line, defaulting to line 1");
+                write((byte)0x08);
+                break;
+        }
+
+        for(int i = 0; i < s.length(); i++) {
+            write((byte) s.charAt(i));
+        }
+    }
+
+    public void clear() throws Exception{
+        write(LCD_CLEARDISPLAY);
+        write(LCD_RETURNHOME);
     }
 }
