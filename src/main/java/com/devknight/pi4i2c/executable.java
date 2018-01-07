@@ -24,7 +24,7 @@ public class executable {
 
                 lcd.setCursorHome();
                 lcd.write("x: " + accelData[0] + " y: " + accelData[1]);
-                lcd.setCursorPosition(2,0);
+                lcd.setCursorPosition(1,0);
                 lcd.write("z: " + accelData[2], 2);
             }
         }
