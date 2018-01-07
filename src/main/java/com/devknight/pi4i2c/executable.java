@@ -10,7 +10,7 @@ public class executable {
         System.out.println("Welcome to JavaI2C");
         try {
             mpu6050 mpu = new mpu6050((byte) 0x69);
-            I2CLcdDisplay lcd = new I2CLcdDisplay(16,2,1,0x27,1,1,0,0,0,0,0,0);
+            I2CLcdDisplay lcd = new I2CLcdDisplay(2,16,1,0x27,1,1,0,0,0,0,0,0);
             while (true) {
                 System.out.println("MPU Temp: " + mpu.get_temp());
                 double[] accelData = mpu.get_accel_data();
