@@ -22,10 +22,8 @@ public class executable {
                 System.out.println("MPU Gyro y: " + gyroData[1]);
                 System.out.println("MPU Gyro z: " + gyroData[2]);
 
-                lcd.setCursorHome();
-                lcd.write("x: " + accelData[0] + " y: " + accelData[1]);
-                lcd.setCursorPosition(0,1);
-                lcd.write("z: " + accelData[2], 2);
+                lcd.write(0,"x: " + accelData[0] + " y: " + accelData[1]);
+                lcd.write(1,"z: " + accelData[2], 2);
             }
         }
         catch(Exception e) {
